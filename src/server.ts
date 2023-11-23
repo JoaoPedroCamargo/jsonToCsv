@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import fs from 'fs'
+import path from 'path'
 
 const serverPORT = process.env.PORT ? process.env.PORT : '3030'
 
@@ -32,7 +33,7 @@ interface Idata {
 app.get('/data', (req, res) => {
     const { data } = req.body
 
-    let writeStream = fs.createWriteStream(__dirname + '/data.csv')
+    let writeStream = fs.createWriteStream(path.join(__dirname, '..', 'tmp', 'data.csv'))
 
     data.forEach(async (obj: Idata, index) => {
         let newLine: Array<Object> = []
@@ -61,7 +62,7 @@ app.get('/data', (req, res) => {
     writeStream.end()
 
 
-    res.download(__dirname + '/data.csv')
+    res.download(path.join(__dirname, '..', 'tmp', 'data.csv'))
 
     // res.send(data.data[0])
 })
